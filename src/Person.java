@@ -1,8 +1,9 @@
+import java.util.List;
 
 public class Person {
 
     private final Profession profession;
-    private List<Armor> armorList; //no se si es mejor hacer los diferentes campos del cupero, y una clase armor con todos los tipos
+    private List<Armor> armorList; //no se si es mejor hacer los diferentes campos del cuerpo, y una clase armor con todos los tipos
     private final double height;
 
     public Person(double height, Profession profession, List<Armor> armorList) {
@@ -20,14 +21,17 @@ public class Person {
     }
 
     public double Defense() {
-        return (getResistence() + getExpertise()) * getHP() * getDFM();
+        return (getResistance() + getExpertise()) * getHP() * getDFM();
     }
 
     public double getAgility() {
         if (armorList == null) {
             throw new NullPointerException();
         }
-        double agility = armorList.getItem().getAgility().sum(); // implementar
+        double agility = 0.0;
+        for (int i = 0; i<5; i++){ // xq hay 5 items x player, no se xq lo veo dudoso esto
+            agility = agility + armorList.get(i).getArmorAgility();
+        }
         return Math.tanh(0.01 * agility);
     }
 
@@ -35,7 +39,10 @@ public class Person {
         if (armorList == null) {
             throw new NullPointerException();
         }
-        double expertise = armorList.getItem().getExpertise().sum(); // same q antes, falta implementar
+        double expertise = 0.0;
+        for( int i = 0; i < 5; i++) {
+            expertise = expertise + armorList.get(i).getArmorExpertise();
+        }
         return 0.6 * Math.tanh(0.01 * expertise);
     }
 
@@ -43,15 +50,21 @@ public class Person {
         if (armorList == null) {
             throw new NullPointerException();
         }
-        double strength = armorList.getItem().getStrength().sum(); // ""
+        double strength = 0.0;
+        for( int i = 0; i < 5; i++) {
+            strength = strength + armorList.get(i).getArmorStrength();
+        }
         return 100 * Math.tanh(0.01 * strength);
     }
 
-    public double getResistence() {
+    public double getResistance() {
         if (armorList == null) {
             throw new NullPointerException();
         }
-        double resistance = armorList.getItem().getResistance().sum();
+        double resistance = 0.0;
+        for( int i = 0; i < 5; i++) {
+            resistance = resistance + armorList.get(i).getArmorResistance();
+        }
         return Math.tanh(0.01 * resistance);
     }
 
@@ -59,7 +72,10 @@ public class Person {
         if (armorList == null) {
             throw new NullPointerException();
         }
-        double hp = armorList.getItem().getHP().sum();
+        double hp = 0.0;
+        for( int i = 0; i < 5; i++) {
+            hp = hp + armorList.get(i).getArmorHp();
+        }
         return 100 * Math.tanh(0.01 * hp);
     }
 
